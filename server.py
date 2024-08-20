@@ -21,7 +21,7 @@ app.config['UrInaudioOutput'] = './output/clone/URIn'
 app.config['EngInaudioOutput'] = './output/clone/EngIn'
 
 
-CORS(app, origins='http://localhost:3000')
+CORS(app, origins=['https://dub-client.vercel.app','https://dub-client-git-main-abdulhameed10s-projects.vercel.app','https://dub-client-abdulhameed10s-projects.vercel.app'])
 
 @app.route('/flask/generateDub', methods=['POST','GET'])
 
