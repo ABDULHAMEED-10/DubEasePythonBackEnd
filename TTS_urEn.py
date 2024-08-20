@@ -2,16 +2,7 @@ from transformers import VitsModel, AutoTokenizer
 from TTS.api import TTS
 import torch
 import scipy
-# from transformers import VitsModel, AutoTokenizer
-# import torch
-# import scipy
-# model = VitsModel.from_pretrained("facebook/mms-tts-eng")
-# tokenizer = AutoTokenizer.from_pretrained("facebook/mms-tts-eng")
-# text = "some example text in the English language"
-# inputs = tokenizer(text, return_tensors="pt")
-# with torch.no_grad():
-#     output = model(**inputs).waveform
-# scipy.io.wavfile.write("techno.wav", rate=model.config.sampling_rate, data=output.float().numpy())
+import os
 
 tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to("cpu")
 
@@ -19,7 +10,10 @@ def process_filename(filename, ln):
     words_to_remove = ['.mp4', '.webm', '.mp3','.ogg','.mpeg','.wav']
     for word in words_to_remove:
         filename_without_extension = filename.replace(word, '')
-    cloned_voice_path = f'E:/DubEase/Python Server/output/clone/{ln}/{filename_without_extension}.wav'
+
+    clonePath = f'./output/clone/{ln}'
+    os.makedirs(clonePath, exist_ok=True)    
+    cloned_voice_path = f'{clonePath}/{filename_without_extension}.wav'
     return filename_without_extension , cloned_voice_path
 def text_to_speech(filename,text):
     model = VitsModel.from_pretrained("facebook/mms-tts-urd-script_arabic")
@@ -30,7 +24,9 @@ def text_to_speech(filename,text):
     with torch.no_grad():
         output = model(**inputs).waveform
 
-    output_path = f"E:/DubEase/Python Server/output/textToSpeach/{filename}.wav"  
+    ttsPath = "./output/textToSpeech"
+    os.makedirs(ttsPath, exist_ok=True)
+    output_path = f"{ttsPath}/{filename}.wav"
     scipy.io.wavfile.write(output_path, rate=model.config.sampling_rate, data=output.squeeze().numpy())
     
     return output_path
